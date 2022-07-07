@@ -25,8 +25,10 @@ final case class DependencyNode(
   * by this manifest, or is a dependency of another dependency.
   */
 sealed trait DependencyRelationship extends Product with Serializable
-case object direct extends DependencyRelationship
-case object indirect extends DependencyRelationship
+object DependencyRelationship {
+  case object direct extends DependencyRelationship
+  case object indirect extends DependencyRelationship
+}
 
 /** A notation of whether the dependency is required for the primary
   * build artifact (runtime), or is only used for development.
@@ -35,5 +37,7 @@ case object indirect extends DependencyRelationship
   * `development:test`, `development:benchmark`.
   */
 sealed trait DependencyScope extends Product with Serializable
-case object runtime extends DependencyScope
-case object development extends DependencyScope
+object DependencyScope {
+  case object runtime extends DependencyScope
+  case object development extends DependencyScope
+}

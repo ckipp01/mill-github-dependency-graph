@@ -1,12 +1,12 @@
 package io.kipp.mill.github.dependency.graph
 
-import mill.scalalib.internal.ModuleUtils
 import coursier.graph.DependencyTree
 import mill._
 import mill.eval.Evaluator
 import mill.scalalib.Dep
 import mill.scalalib.JavaModule
 import mill.scalalib.Lib
+import mill.scalalib.internal.ModuleUtils
 
 /** Utils to help find all your modules and resolve their dependencies.
   */

@@ -25,7 +25,7 @@ final case class ModuleTrees(
     * @return Mapping of the name of the dependency and the DependencyNode that
     * corresponds to it. The format of the name is org:module:version.
     */
-  def toFlattenedNodes: Map[String, DependencyNode] = {
+  def toFlattenedNodes(): Map[String, DependencyNode] = {
 
     val allDependencies = mutable.Map[String, DependencyNode]()
 
@@ -38,7 +38,8 @@ final case class ModuleTrees(
         val packageUrl =
           s"pkg:maven/${dep.module.organization.value}/${dep.module.name.value}@${dep.version}"
         val relationShip: DependencyRelationship =
-          if (root) direct else indirect
+          if (root) DependencyRelationship.direct
+          else DependencyRelationship.indirect
         val dependencies = tree.children.map { child =>
           s"${child.dependency.module.orgName}:${child.dependency.version}"
         }
@@ -57,7 +58,9 @@ final case class ModuleTrees(
 
       // If we are still at the top level and the dep was already a transitive
       // dep, we now mark it as direct.
-      val updated = if (root) node.copy(relationship = Some(direct)) else node
+      val updated =
+        if (root) node.copy(relationship = Some(DependencyRelationship.direct))
+        else node
       allDependencies += ((name, updated))
       tree.children.foreach(toNode(_, root = false))
     }
@@ -66,4 +69,19 @@ final case class ModuleTrees(
     allDependencies.toMap
   }
 
+  def toManifest() = {
+    // There is still a bit of uncertainty here about how this should be
+    // structured and we won't know until we hear back from the dependabot
+    // team. Should every modules be considered a manifest, or is there just
+    // one manifest with many projects. I think there should only be one, but
+    // for now we copy the behavior of
+    // https://github.com/scalacenter/sbt-github-dependency-graph for them to
+    // be aligned.
+    val name = module.toString()
+    // TODO in the future we may want to also figure out how to resolve these
+    // locations if they are defined in other files, but for now we just say build.sc
+    val file = FileInfo("build.sc")
+    val resolved = toFlattenedNodes()
+    Manifest(name, Some(file), Map.empty, resolved)
+  }
 }
