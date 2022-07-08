@@ -31,7 +31,7 @@ trait Common
 
   def pomSettings = PomSettings(
     description = "Submit your mill project's dependency graph to GitHub",
-    organization = "io.kipp",
+    organization = "io.chris-kipp",
     url = "https://github.com/ckipp01/mill-github-dependency-graph",
     licenses = Seq(License.`Apache-2.0`),
     versionControl = VersionControl
