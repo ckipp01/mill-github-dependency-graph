@@ -57,8 +57,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     env:
-      SONATYPE_PGP_PRIVATE_KEY: ${{ secrets.SONATYPE_PGP_PRIVATE_KEY }}
-      SONATYPE_PGP_PRIVATE_KEY_PASSWORD: ${{ secrets.SONATYPE_PGP_PRIVATE_KEY_PASSWORD }}
+      SONATYPE_PGP_PRIVATE_KEY: ${{ secrets.PGP_PRIVATE_KEY }}
+      SONATYPE_PGP_PRIVATE_KEY_PASSWORD: ${{ secrets.PGP_PASSWORD }}
       SONATYPE_USER: ${{ secrets.SONATYPE_USER }}
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       LANG: "en_US.UTF-8"
