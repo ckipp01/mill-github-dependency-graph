@@ -9,11 +9,39 @@ import java.net.URL
 import java.time.Instant
 import scala.util.Properties
 
+import Writers._
+
 object Github {
 
-  val url = new URL(
+  private val url = new URL(
     s"${Env.githubApiUrl}/repos/${Env.githubRepository}/dependency-graph/snapshots"
   )
+
+  def submit(snapshot: DependencySnapshot)(implicit ctx: mill.api.Ctx): Unit = {
+    val payload = upickle.default.write(snapshot)
+    val result = requests.post(
+      url.toString(),
+      headers = Map(
+        "Content-Type" -> "application/json",
+        "Authorization" -> s"token ${Env.githubToken}"
+      ),
+      data = payload,
+      check = false
+    )
+
+    if (result.is2xx) {
+      ctx.log.info("Correctly submitted your snapshot to GitHub!")
+    } else if (result.statusCode == 401) {
+      ctx.log.error(
+        "Unable to correctly authenticate with GitHub. Make sure you have a github token."
+      )
+    } else {
+      ctx.log.error(
+        "It looks like something went wrong when trying to submit your dependnecy graph."
+      )
+      ctx.log.error(s"[${result.statusCode}]  ${result.statusMessage}")
+    }
+  }
 
   def snapshot(manifests: Map[String, Manifest]): DependencySnapshot =
     DependencySnapshot(

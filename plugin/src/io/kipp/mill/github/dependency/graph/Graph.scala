@@ -12,7 +12,7 @@ object Graph extends ExternalModule { outer =>
   def submit(ev: Evaluator) = T.command {
     val manifests = generate(ev)()
     val snapshot = Github.snapshot(manifests)
-    // TODO map to full Snapshot
+    Github.submit(snapshot)
   }
 
   def generate(ev: Evaluator) = T.command {
