@@ -79,6 +79,8 @@ jobs:
             rm gpg_key
             ./mill -i mill.scalalib.PublishModule/publishAll \
               --publishArtifacts __.publishArtifacts \
+              --sonatypeUri "https://s01.oss.sonatype.org/service/local" \
+              --sonatypeSnapshotUri "https://s01.oss.sonatype.org/content/repositories/snapshots" \
               --sonatypeCreds $SONATYPE_USER:$SONATYPE_PASSWORD \
               --gpgArgs --passphrase=$PGP_PASSWORD,--no-tty,--pinentry-mode,loopback,--batch,--yes,-a,-b \
               --readTimeout 600000 \
