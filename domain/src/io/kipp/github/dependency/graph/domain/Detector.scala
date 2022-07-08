@@ -1,4 +1,4 @@
-package io.kipp.mill.github.dependency.graph.domain
+package io.kipp.github.dependency.graph.domain
 
 /** Detector is the representation of the tool used to gather the dependency
   * snapshot information.

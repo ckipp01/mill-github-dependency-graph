@@ -1,9 +1,9 @@
 package io.kipp.mill.github.dependency.graph
 
-import io.kipp.mill.github.dependency.graph.domain.DependencySnapshot
-import io.kipp.mill.github.dependency.graph.domain.Detector
-import io.kipp.mill.github.dependency.graph.domain.Job
-import io.kipp.mill.github.dependency.graph.domain.Manifest
+import io.kipp.github.dependency.graph.domain.DependencySnapshot
+import io.kipp.github.dependency.graph.domain.Detector
+import io.kipp.github.dependency.graph.domain.Job
+import io.kipp.github.dependency.graph.domain.Manifest
 
 import java.net.URL
 import java.time.Instant

@@ -1,4 +1,4 @@
-package io.kipp.mill.github.dependency.graph.domain
+package io.kipp.github.dependency.graph.domain
 
 /** Job that is being submitted by the dependency snapshot
   *
