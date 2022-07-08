@@ -53,7 +53,7 @@ jobs:
         ./mill -i --debug itest
 
   publish-sonatype:
-    if: github.repository == 'lolgab/mill-mima' && contains(github.ref, 'refs/tags/')
+    if: github.repository == 'ckipp01/mill-github-dependency-graph' && contains(github.ref, 'refs/tags/')
     needs: test
     runs-on: ubuntu-latest
     env:
