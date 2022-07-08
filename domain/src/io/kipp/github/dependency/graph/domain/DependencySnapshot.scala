@@ -1,4 +1,4 @@
-package io.kipp.mill.github.dependency.graph.domain
+package io.kipp.github.dependency.graph.domain
 
 /** Dependency submission snapshot for GitHub.
   * Modeled after the info found in:

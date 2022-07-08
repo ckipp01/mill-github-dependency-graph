@@ -46,7 +46,9 @@ trait Common
   def scalafixIvyDeps = Agg(ivy"com.github.liancheng::organize-imports:0.6.0")
 }
 
-object domain extends Common
+object domain extends Common {
+  override def artifactName = "github-dependency-graph-domain"
+}
 
 object plugin extends Common with BuildInfo {
 

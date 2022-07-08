@@ -1,7 +1,7 @@
 package io.kipp.mill.github.dependency.graph
 
 import coursier.graph.DependencyTree
-import io.kipp.mill.github.dependency.graph.domain._
+import io.kipp.github.dependency.graph.domain._
 import mill.scalalib.JavaModule
 
 import scala.collection.mutable

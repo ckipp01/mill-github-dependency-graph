@@ -1,8 +1,9 @@
 package io.kipp.mill.github.dependency.graph
 
-import io.kipp.mill.github.dependency.graph.domain.DependencyRelationship
-import io.kipp.mill.github.dependency.graph.domain.DependencyScope
-import io.kipp.mill.github.dependency.graph.domain.DependencySnapshot
+import io.kipp.github.dependency.graph.domain.DependencyRelationship
+import io.kipp.github.dependency.graph.domain.DependencyScope
+import io.kipp.github.dependency.graph.domain.DependencySnapshot
+import io.kipp.github.dependency.graph.domain.Manifest
 import ujson.Obj
 import upickle.default.Writer
 
@@ -41,10 +42,10 @@ object Writers {
     *  handler and a couple other things. It ends up being just as short to
     *  manually do all this, and then we avoid having to use ujson.Null as well.
     */
-  implicit val manifestWriter: Writer[domain.Manifest] =
+  implicit val manifestWriter: Writer[Manifest] =
     upickle.default.writer[ujson.Obj].comap(manifestToJson)
 
-  private def manifestToJson(manifest: domain.Manifest): Obj = {
+  private def manifestToJson(manifest: Manifest): Obj = {
     val base = ujson.Obj(
       "name" -> manifest.name,
       "metadata" -> manifest.metadata.toJsonValue,
