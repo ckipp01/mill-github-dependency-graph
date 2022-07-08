@@ -37,6 +37,9 @@ object Writers {
               case DependencyScope.runtime =>
                 dependencyNodeObject.update("scope", "runtime")
             }
+            dependencyNode.package_url.foreach { url =>
+              dependencyNodeObject.update("package_url", url)
+            }
             (key, dependencyNodeObject)
           }
         )

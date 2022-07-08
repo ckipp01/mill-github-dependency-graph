@@ -8,6 +8,8 @@ import com.goyeau.mill.scalafix.ScalafixModule
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
 import mill.contrib.buildinfo.BuildInfo
 import mill.scalalib.api.Util.scalaNativeBinaryVersion
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
+import de.tobiasroeser.mill.integrationtest._
 
 // TODO Should probably drop this to 0.10.0, but when I did a bunch of stuff breaks
 val millVersion = "0.10.5"
@@ -49,7 +51,7 @@ object domain extends Common
 object plugin extends Common with BuildInfo {
 
   override def artifactName =
-    s"${artifactBase}${millBinaryVersion(millVersion)}"
+    s"${artifactBase}_mill${millBinaryVersion(millVersion)}"
 
   override def moduleDeps = Seq(domain)
   override def compileIvyDeps = super.compileIvyDeps() ++ Agg(
@@ -68,9 +70,22 @@ object plugin extends Common with BuildInfo {
   override def buildInfoPackageName = Some(
     "io.kipp.mill.github.dependency.graph"
   )
+}
 
-  object test extends Tests with TestModule.Munit {
-    def ivyDeps = Agg(ivy"org.scalameta::munit:0.7.29")
-  }
+object itest extends MillIntegrationTestModule {
 
+  def millTestVersion = millVersion
+
+  def pluginsUnderTest = Seq(plugin)
+
+  def testBase = millSourcePath / "src"
+
+  override def testInvocations: T[Seq[(PathRef, Seq[TestInvocation.Targets])]] =
+    T {
+      Seq(
+        PathRef(testBase / "minimal") -> Seq(
+          TestInvocation.Targets(Seq("checkManifest"), noServer = true)
+        )
+      )
+    }
 }

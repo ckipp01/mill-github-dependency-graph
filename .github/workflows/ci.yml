@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: coursier/cache-action@v6
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Check formatting
+      run: 
+        ./mill -i __.checkFormat
+    - name: Check scalafix
+      run: 
+        ./mill -i __.fix --check
+
+  test:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['8', '17']
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: coursier/cache-action@v6
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+
+    - name: Compile
+      run:
+        ./mill -i __.compile
+
+    - name: Test
+      run:
+        ./mill -i --debug itest
