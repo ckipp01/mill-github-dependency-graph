@@ -84,6 +84,7 @@ object itest extends MillIntegrationTestModule {
     T {
       Seq(
         PathRef(testBase / "minimal") -> Seq(
+          TestInvocation.Targets(Seq("checkManifest"), noServer = true),
           TestInvocation.Targets(Seq("checkManifest"), noServer = true)
         )
       )
