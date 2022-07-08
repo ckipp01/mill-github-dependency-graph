@@ -10,6 +10,8 @@ import mill.contrib.buildinfo.BuildInfo
 import mill.scalalib.api.Util.scalaNativeBinaryVersion
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
 import de.tobiasroeser.mill.integrationtest._
+import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
+import de.tobiasroeser.mill.vcs.version.VcsVersion
 
 // TODO Should probably drop this to 0.10.0, but when I did a bunch of stuff breaks
 val millVersion = "0.10.5"
@@ -25,8 +27,7 @@ trait Common
     with ScalafixModule
     with ScalafmtModule {
 
-  // TODO manage this with mill.vsc.version instead
-  def publishVersion = "0.0.1-SNAPSHOT"
+  def publishVersion = VcsVersion.vcsState().format()
 
   def pomSettings = PomSettings(
     description = "Submit your mill project's dependency graph to GitHub",
@@ -59,8 +60,7 @@ object plugin extends Common with BuildInfo {
   override def compileIvyDeps = super.compileIvyDeps() ++ Agg(
     ivy"com.lihaoyi::mill-scalalib:$millVersion",
     ivy"com.lihaoyi::upickle:2.0.0",
-    ivy"com.lihaoyi::requests:0.7.1",
-    ivy"com.lihaoyi::pprint:0.7.3" // TODO remove before publishing
+    ivy"com.lihaoyi::requests:0.7.1"
   )
 
   override def buildInfoMembers = Map(
