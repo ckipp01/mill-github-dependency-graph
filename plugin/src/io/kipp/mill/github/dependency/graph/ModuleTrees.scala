@@ -52,16 +52,26 @@ final case class ModuleTrees(
         )
       }
 
-      // TODO revisit this, we should just check if it exists and if the
-      // relationship is correct, if so, don't overwrite it like we do now.
-      val node = allDependencies.getOrElse(name, putTogether)
+      def verifyRelationship(node: DependencyNode) =
+        (root && node.isDirectDependency) || (!root && !node.isDirectDependency)
 
-      // If we are still at the top level and the dep was already a transitive
-      // dep, we now mark it as direct.
-      val updated =
-        if (root) node.copy(relationship = Some(DependencyRelationship.direct))
-        else node
-      allDependencies += ((name, updated))
+      allDependencies.get(name) match {
+        // If the node is found and the relationship is correct just do nothing
+        case Some(node) if verifyRelationship(node) => ()
+        // If the node is found and the relationship is incorrect, but it's a
+        // root node, then make sure to mark it as direct
+        case Some(node) if root =>
+          val updated =
+            node.copy(relationship = Some(DependencyRelationship.direct))
+          allDependencies += ((name, updated))
+        // Should never really happen, but it it does do nothing
+        case Some(_) => ()
+        // Unseen dependency, create a node for it
+        case None =>
+          val node = putTogether
+          allDependencies += ((name, node))
+      }
+
       tree.children.foreach(toNode(_, root = false))
     }
 
@@ -70,13 +80,9 @@ final case class ModuleTrees(
   }
 
   def toManifest() = {
-    // There is still a bit of uncertainty here about how this should be
-    // structured and we won't know until we hear back from the dependabot
-    // team. Should every modules be considered a manifest, or is there just
-    // one manifest with many projects. I think there should only be one, but
-    // for now we copy the behavior of
-    // https://github.com/scalacenter/sbt-github-dependency-graph for them to
-    // be aligned.
+    // NOTE: That this may seem odd when reading the spec that we have a
+    // manifest per module basically, but we did check with the GitHub team and
+    // they verified the manifests that we showed them.
     val name = module.toString()
     // TODO in the future we may want to also figure out how to resolve these
     // locations if they are defined in other files, but for now we just say build.sc

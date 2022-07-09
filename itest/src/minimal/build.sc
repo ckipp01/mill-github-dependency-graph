@@ -3,7 +3,8 @@ import $exec.plugins
 import io.kipp.mill.github.dependency.graph.Graph
 import io.kipp.mill.github.dependency.graph.Writers._
 import mill.eval.Evaluator
-import $ivy.`org.scalameta::munit:0.7.29`, munit.Assertions._
+import $ivy.`org.scalameta::munit:0.7.29`
+import munit.Assertions._
 
 object minimal extends ScalaModule {
   def scalaVersion = "3.1.3"
