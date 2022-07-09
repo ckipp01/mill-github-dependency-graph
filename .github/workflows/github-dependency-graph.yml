@@ -21,4 +21,4 @@ jobs:
 
     - name: Submit dependency graph
       run: 
-        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph_mill0.10:0.0.9 io.kipp.mill.github.dependency.graph.Graph/submit
+        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph_mill0.10:0.0.10 io.kipp.mill.github.dependency.graph.Graph/submit
