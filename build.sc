@@ -3,6 +3,7 @@ import scalalib._
 import scalafmt._
 import publish._
 import mill.scalalib.publish._
+import mill.scalalib.api.ZincWorkerUtil
 import $ivy.`com.goyeau::mill-scalafix::0.2.8`
 import com.goyeau.mill.scalafix.ScalafixModule
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
@@ -15,6 +16,7 @@ import de.tobiasroeser.mill.vcs.version.VcsVersion
 
 // TODO Should probably drop this to 0.10.0, but when I did a bunch of stuff breaks
 val millVersion = "0.10.3"
+val scala213 = "2.13.8"
 val artifactBase = "mill-github-dependency-graph"
 
 def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
@@ -40,11 +42,13 @@ trait Common
       Seq(Developer("ckipp01", "Chris Kipp", "https://www.chris-kipp.io"))
   )
 
-  def scalaVersion = "2.13.8"
+  def scalaVersion = scala213
 
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
 
   def scalafixIvyDeps = Agg(ivy"com.github.liancheng::organize-imports:0.6.0")
+
+  def scalafixScalaBinaryVersion = ZincWorkerUtil.scalaBinaryVersion(scala213)
 }
 
 object domain extends Common {
@@ -86,8 +90,10 @@ object itest extends MillIntegrationTestModule {
     T {
       Seq(
         PathRef(testBase / "minimal") -> Seq(
-          TestInvocation.Targets(Seq("checkManifest"), noServer = true),
           TestInvocation.Targets(Seq("checkManifest"), noServer = true)
+        ),
+        PathRef(testBase / "directRelationship") -> Seq(
+          TestInvocation.Targets(Seq("verify"), noServer = true)
         )
       )
     }

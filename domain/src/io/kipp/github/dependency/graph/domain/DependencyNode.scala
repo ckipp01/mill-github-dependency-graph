@@ -19,7 +19,17 @@ final case class DependencyNode(
     relationship: Option[DependencyRelationship],
     scope: Option[DependencyScope],
     dependencies: Seq[String]
-)
+) {
+
+  /** Returns true if both the relationship exists and is direct
+    */
+  def isDirectDependency = relationship match {
+    case None                                  => false
+    case Some(DependencyRelationship.indirect) => false
+    case Some(DependencyRelationship.direct)   => true
+  }
+
+}
 
 /** A notation of whether a dependency is requested directly
   * by this manifest, or is a dependency of another dependency.
