@@ -14,7 +14,7 @@ import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
 import de.tobiasroeser.mill.vcs.version.VcsVersion
 
 // TODO Should probably drop this to 0.10.0, but when I did a bunch of stuff breaks
-val millVersion = "0.10.5"
+val millVersion = "0.10.3"
 val artifactBase = "mill-github-dependency-graph"
 
 def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
