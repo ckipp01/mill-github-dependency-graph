@@ -17,16 +17,6 @@
         "relationship": "direct",
         "package_url": "pkg:maven/com.lihaoyi/pprint_3@0.7.3"
       },
-      "org.scala-lang:scala3-library_3:3.0.0": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.scala-lang:scala-library:2.13.8"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.0.0"
-      },
       "com.lihaoyi:fansi_3:0.3.1": {
         "metadata": {
           
@@ -67,16 +57,6 @@
         ],
         "relationship": "direct",
         "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.1.3"
-      },
-      "org.scala-lang:scala3-library_3:3.0.2": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.scala-lang:scala-library:2.13.8"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.0.2"
       }
     },
     "file": {
@@ -100,16 +80,6 @@
         ],
         "relationship": "direct",
         "package_url": "pkg:maven/com.lihaoyi/pprint_3@0.7.3"
-      },
-      "org.scala-lang:scala3-library_3:3.0.0": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.scala-lang:scala-library:2.13.8"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.0.0"
       },
       "org.scalameta:junit-interface:0.7.29": {
         "metadata": {
@@ -142,6 +112,28 @@
         ],
         "relationship": "indirect",
         "package_url": "pkg:maven/org.hamcrest/hamcrest-core@1.3"
+      },
+      "org.scalameta:munit_3:0.7.29": {
+        "metadata": {
+          
+        },
+        "dependencies": [
+          "junit:junit:4.13.1",
+          "org.scala-lang:scala3-library_3:3.0.1",
+          "org.scalameta:junit-interface:0.7.29"
+        ],
+        "relationship": "direct",
+        "package_url": "pkg:maven/org.scalameta/munit_3@0.7.29"
+      },
+      "org.scala-sbt:test-interface:1.0": {
+        "metadata": {
+          
+        },
+        "dependencies": [
+          
+        ],
+        "relationship": "indirect",
+        "package_url": "pkg:maven/org.scala-sbt/test-interface@1.0"
       },
       "com.lihaoyi:sourcecode_3:0.2.8": {
         "metadata": {
@@ -182,58 +174,6 @@
         ],
         "relationship": "indirect",
         "package_url": "pkg:maven/junit/junit@4.13.2"
-      },
-      "org.scala-lang:scala3-library_3:3.0.2": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.scala-lang:scala-library:2.13.8"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.0.2"
-      },
-      "org.scalameta:munit_3:0.7.29": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "junit:junit:4.13.1",
-          "org.scala-lang:scala3-library_3:3.0.1",
-          "org.scalameta:junit-interface:0.7.29"
-        ],
-        "relationship": "direct",
-        "package_url": "pkg:maven/org.scalameta/munit_3@0.7.29"
-      },
-      "org.scala-lang:scala3-library_3:3.0.1": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.scala-lang:scala-library:2.13.8"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-lang/scala3-library_3@3.0.1"
-      },
-      "junit:junit:4.13.1": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          "org.hamcrest:hamcrest-core:1.3"
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/junit/junit@4.13.1"
-      },
-      "org.scala-sbt:test-interface:1.0": {
-        "metadata": {
-          
-        },
-        "dependencies": [
-          
-        ],
-        "relationship": "indirect",
-        "package_url": "pkg:maven/org.scala-sbt/test-interface@1.0"
       }
     },
     "file": {
