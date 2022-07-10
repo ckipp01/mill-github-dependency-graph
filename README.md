@@ -29,7 +29,7 @@ env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 jobs:
-  style-check:
+  submit-dependency-graph:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
