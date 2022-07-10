@@ -10,6 +10,14 @@ on:
       - '*'
   pull_request:
 
+
+concurrency:
+  # Taken from scalameta/metals
+  # On main, we don't want any jobs cancelled so the sha is used to name the group
+  # On PR branches, we cancel the job if new commits are pushed
+  group: ${{ (github.ref == 'refs/heads/main' ||  startsWith(github.ref, 'refs/tags') ) && format('contributor-pr-base-{0}', github.sha) || format('contributor-pr-{0}', github.ref) }}
+  cancel-in-progress: true
+
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
