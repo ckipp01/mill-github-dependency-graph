@@ -41,7 +41,7 @@ jobs:
 
     - name: Submit dependency graph
       run: 
-        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.10 io.kipp.mill.github.dependency.graph.Graph/submit
+        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.11 io.kipp.mill.github.dependency.graph.Graph/submit
 ```
 
 You can also just run the following command from the root of your workspace
@@ -74,5 +74,5 @@ look like locally for your project, which are the main part of the
 
 
 ```sh
-./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.10 io.kipp.mill.github.dependency.graph.Graph/generate
+./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.11 io.kipp.mill.github.dependency.graph.Graph/generate
 ```
