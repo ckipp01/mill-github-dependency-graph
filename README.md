@@ -4,6 +4,17 @@ A [Mill](https://com-lihaoyi.github.io/mill/mill/Intro_to_Mill.html) plugin to
 submit your dependency graph to GitHub via their [Dependency Submission
 API](https://github.blog/2022-06-17-creating-comprehensive-dependency-graph-build-time-detection/).
 
+The main benifits of doing this are:
+
+1. Being able to see your dependency graph on GitHub in your [Insights
+   tab](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository#viewing-the-dependency-graph).
+   For example you can see this
+   [here](https://github.com/ckipp01/mill-github-dependency-graph/network/dependencies)
+   for this plugin.
+2. If enabled, Dependabot can send you
+   [alerts](https://docs.github.com/en/code-security/dependabot/dependabot-alerts/viewing-and-updating-dependabot-alerts)
+   about security vulnerabilities in your dependencies.
+
 ## Requirements
 
 - Right now this plugin requires **at least Mill 0.10.3**.

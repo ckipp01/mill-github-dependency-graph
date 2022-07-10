@@ -2,13 +2,13 @@ name: ci
 
 on:
   push:
-    paths-ignore:
-      - '*.md'
     branches:
       - main
     tags:
       - '*'
   pull_request:
+    paths-ignore:
+      - 'README.md'
 
 
 concurrency:
