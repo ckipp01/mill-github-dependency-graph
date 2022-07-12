@@ -50,7 +50,7 @@ object Github {
                       |
                       |We submitted dependencies for ${manifestModules} modules.
                       |This was a total of ${totalDependencies} dependencies.
-                      |""")
+                      |""".stripMargin)
     } else if (result.statusCode == 404) {
       val msg =
         """Encountered a 404, make sure you have "Dependency Graph" enabled under "Settings -> Code Security and analysis""""
@@ -64,7 +64,7 @@ object Github {
       val msg =
         s"""It looks like something went wrong when trying to submit your dependnecy graph.
             |
-            |[${result.statusCode}] ${result.statusMessage}"""
+            |[${result.statusCode}] ${result.statusMessage}""".stripMargin
       throw new Exception(msg)
     }
   }
