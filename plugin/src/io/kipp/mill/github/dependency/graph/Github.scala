@@ -39,17 +39,21 @@ object Github {
 
     if (result.is2xx) {
       ctx.log.info("Correctly submitted your snapshot to GitHub!")
+    } else if (result.statusCode == 404) {
+      val msg =
+        """Encountered a 404, make sure you have "Dependency Graph" enabled under "Settings -> Code Security and analysis""""
+      throw new Exception(msg)
     } else if (result.statusCode == 401) {
-      ctx.log.error(
-        """Unable to correctly authenticate with GitHub.
-          |
-          |Make sure you have the correct github token set up in your env.""".stripMargin
-      )
+      val msg = """Unable to correctly authenticate with GitHub.
+                  |
+                  |Make sure you have the correct github token set up in your env.""".stripMargin
+      throw new Exception(msg)
     } else {
-      ctx.log.error(
-        "It looks like something went wrong when trying to submit your dependnecy graph."
-      )
-      ctx.log.error(s"[${result.statusCode}] ${result.statusMessage}")
+      val msg =
+        s"""It looks like something went wrong when trying to submit your dependnecy graph.
+            |
+            |[${result.statusCode}] ${result.statusMessage}"""
+      throw new Exception(msg)
     }
   }
 

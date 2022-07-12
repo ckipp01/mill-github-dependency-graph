@@ -12,6 +12,11 @@ import upickle.default.Writer
   */
 object Writers {
 
+  /** So we do this by hand for a couple reason. We could rely on a macroW for
+    *  this, but we do then hit on some weird things and need a custom Option
+    *  handler and a couple other things. It ends up being just as short to
+    *  manually do all this, and then we avoid having to use ujson.Null as well.
+    */
   implicit val snapshotWriter: Writer[DependencySnapshot] =
     upickle.default.writer[ujson.Obj].comap { snapshot =>
       ujson.Obj(
@@ -37,11 +42,6 @@ object Writers {
       )
     }
 
-  /** So we do this by hand for a couple reason. We could rely on a macroW for
-    *  this, but we do then hit on some weird things and need a custom Option
-    *  handler and a couple other things. It ends up being just as short to
-    *  manually do all this, and then we avoid having to use ujson.Null as well.
-    */
   implicit val manifestWriter: Writer[Manifest] =
     upickle.default.writer[ujson.Obj].comap(manifestToJson)
 
