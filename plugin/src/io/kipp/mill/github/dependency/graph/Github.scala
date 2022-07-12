@@ -38,7 +38,19 @@ object Github {
     )
 
     if (result.is2xx) {
-      ctx.log.info("Correctly submitted your snapshot to GitHub!")
+      val manifestModules = snapshot.manifests.size
+      val totalDependencies =
+        snapshot.manifests.values.foldLeft(0) { (total, manifest) =>
+          total + manifest.resolved.size
+        }
+
+      ctx.log.info(s"""Correctly submitted your snapshot to GitHub!
+                      |
+                      |Here are some fun stats!
+                      |
+                      |We submitted dependencies for ${manifestModules} modules.
+                      |This was a total of ${totalDependencies} dependencies.
+                      |""")
     } else if (result.statusCode == 404) {
       val msg =
         """Encountered a 404, make sure you have "Dependency Graph" enabled under "Settings -> Code Security and analysis""""
