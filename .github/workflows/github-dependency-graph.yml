@@ -18,7 +18,4 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
-    - name: Submit dependency graph
-      run: 
-        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.13 io.kipp.mill.github.dependency.graph.Graph/submit
+    - uses: ckipp01/mill-dependency-submission@v1
