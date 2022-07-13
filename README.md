@@ -24,9 +24,7 @@ The main benifits of doing this are:
 
 ## Quick Start
 
-In the future there will be a GitHub Action for this, but for now the quickest
-way to get started with this at the moment is to create a workflow in your
-project with the following:
+The easiest way to use this plugin is with the [mill-dependency-submission](https://github.com/ckipp01/mill-dependency-submission) action. You can add this to a workflow like below:
 
 ```yml
 name: github-dependency-graph
@@ -35,9 +33,6 @@ on:
   push:
     branches:
       - main
-
-env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
 jobs:
   submit-dependency-graph:
@@ -49,10 +44,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
-    - name: Submit dependency graph
-      run: 
-        ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.13 io.kipp.mill.github.dependency.graph.Graph/submit
+    - uses: ckipp01/mill-dependency-submission@v1
 ```
 
 You can also just run the following command from the root of your workspace
@@ -61,10 +53,7 @@ which will create the file for you:
 ```sh
 curl -o .github/workflows/github-dependency-graph.yml --create-dirs https://raw.githubusercontent.com/ckipp01/mill-github-dependency-graph/main/.github/workflows/github-dependency-graph.yml
 ```
-The plugin is an [external
-module](https://com-lihaoyi.github.io/mill/mill/Modules.html#_external_modules)
-so you don't need to include it in your build. After you submit your graph
-you'll be able to [view your
+After you submit your graph you'll be able to [view your
 dependencies](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository#viewing-the-dependency-graph).
 
 ## How's this work?
@@ -85,5 +74,5 @@ look like locally for your project, which are the main part of the
 
 
 ```sh
-./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.0.13 io.kipp.mill.github.dependency.graph.Graph/generate
+./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.1.0 show io.kipp.mill.github.dependency.graph.Graph/generate
 ```
