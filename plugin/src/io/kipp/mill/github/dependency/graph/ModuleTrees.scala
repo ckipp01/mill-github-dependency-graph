@@ -28,7 +28,6 @@ final case class ModuleTrees(
   def toFlattenedNodes(): Map[String, DependencyNode] = {
 
     val allDependencies = mutable.Map[String, DependencyNode]()
-    val reconciledDirects = mutable.Set[String]()
 
     def toNode(tree: DependencyTree, root: Boolean): Unit = {
       val dep = tree.dependency
@@ -80,15 +79,7 @@ final case class ModuleTrees(
     }
 
     dependencyTrees.foreach(toNode(_, root = true))
-
-    // Before we return we ensure that we take care of marking any of the root
-    // reconciled versions as direct.
-    allDependencies.toMap.map {
-      case (key, node)
-          if reconciledDirects.contains(key) && !node.isDirectDependency =>
-        (key, node.copy(relationship = Some(DependencyRelationship.direct)))
-      case fineAsIs => identity(fineAsIs)
-    }
+    allDependencies.toMap
   }
 
   def toManifest() = {
