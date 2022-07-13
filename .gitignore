@@ -2,3 +2,4 @@
 .bsp/
 .metals/
 out/
+manifest.json

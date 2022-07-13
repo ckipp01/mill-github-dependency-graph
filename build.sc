@@ -97,6 +97,9 @@ object itest extends MillIntegrationTestModule {
         ),
         PathRef(testBase / "eviction") -> Seq(
           TestInvocation.Targets(Seq("verify"), noServer = true)
+        ),
+        PathRef(testBase / "range") -> Seq(
+          TestInvocation.Targets(Seq("verify"), noServer = true)
         )
       )
     }
