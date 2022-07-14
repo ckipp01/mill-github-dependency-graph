@@ -1,10 +1,12 @@
 package io.kipp.mill.github.dependency.graph
 
+import com.github.packageurl.PackageURLBuilder
 import coursier.graph.DependencyTree
 import io.kipp.github.dependency.graph.domain._
 import mill.scalalib.JavaModule
 
 import scala.collection.mutable
+import scala.util.Try
 
 /** Represents a project modules an the dependency trees that belong to it.
   *
@@ -25,7 +27,9 @@ final case class ModuleTrees(
     * @return Mapping of the name of the dependency and the DependencyNode that
     * corresponds to it. The format of the name is org:module:version.
     */
-  def toFlattenedNodes(): Map[String, DependencyNode] = {
+  def toFlattenedNodes()(implicit
+      ctx: mill.api.Ctx
+  ): Map[String, DependencyNode] = {
 
     val allDependencies = mutable.Map[String, DependencyNode]()
 
@@ -37,8 +41,26 @@ final case class ModuleTrees(
 
       def putTogether: DependencyNode = {
         // TODO consider classifiers
-        val packageUrl =
-          s"pkg:maven/${dep.module.organization.value}/${dep.module.name.value}@${reconciledVersion}"
+
+        val purl = Try(
+          PackageURLBuilder
+            .aPackageURL()
+            .withType("maven")
+            .withNamespace(dep.module.organization.value)
+            .withName(dep.module.name.value)
+            .withVersion(reconciledVersion)
+            .build()
+        ).fold(
+          e => {
+            ctx.log.error(
+              s"PURL can't be created from: ${dep.module.orgName}:${reconciledVersion}"
+            )
+            ctx.log.error(e.getMessage())
+            None
+          },
+          validPurl => Some(validPurl.toString())
+        )
+
         val relationShip: DependencyRelationship =
           if (root) DependencyRelationship.direct
           else DependencyRelationship.indirect
@@ -46,7 +68,7 @@ final case class ModuleTrees(
           s"${child.dependency.module.orgName}:${child.reconciledVersion}"
         }
         DependencyNode(
-          Some(packageUrl),
+          purl,
           // TODO we can check if original == reconciled here and add metadata that it is a reconciled version
           Map.empty,
           Some(relationShip),
@@ -60,15 +82,36 @@ final case class ModuleTrees(
 
       allDependencies.get(name) match {
         // If the node is found and the relationship is correct just do nothing
-        case Some(node) if verifyRelationship(node) => ()
+        case Some(node) if verifyRelationship(node) =>
+          ctx.log.debug(
+            s"Already seen ${name} with this relationship in this manifest, so skipping..."
+          )
         // If the node is found and the relationship is incorrect, but it's a
         // root node, then make sure to mark it as direct
         case Some(node) if root =>
+          ctx.log.debug(
+            s"Already seen ${name} but we're at the root level so marking as direct..."
+          )
           val updated =
             node.copy(relationship = Some(DependencyRelationship.direct))
           allDependencies += ((name, updated))
-        // Should never really happen, but it it does do nothing
-        case Some(_) => ()
+        case Some(_) =>
+          ctx.log.debug(
+            s"Found ${name}, but it's already marked as direct so skipping..."
+          )
+        // Not a very elegant check, but we don't want to include a range in
+        // here. These shouldn't still be a range at this point, but it is for
+        // whatever reason. For now ignore it. This should be incredibly rare
+        // and I believe a bug in coursier.
+        case None if reconciledVersion.contains(",") =>
+          ctx.log.error(
+            s"""Found what I think is a range version that shouldn't be here...
+                |
+                |${dep.module.organization.value}:${dep.module.name.value}:${reconciledVersion}
+                |
+                |If you see this, report it. Skipping...
+                |""".stripMargin
+          )
         // Unseen dependency, create a node for it
         case None =>
           val node = putTogether
@@ -82,7 +125,7 @@ final case class ModuleTrees(
     allDependencies.toMap
   }
 
-  def toManifest() = {
+  def toManifest()(implicit ctx: mill.api.Ctx) = {
     // NOTE: That this may seem odd when reading the spec that we have a
     // manifest per module basically, but we did check with the GitHub team and
     // they verified the manifests that we showed them.

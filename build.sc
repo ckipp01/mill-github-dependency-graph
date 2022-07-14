@@ -62,9 +62,13 @@ object plugin extends Common with BuildInfo {
 
   override def moduleDeps = Seq(domain)
   override def compileIvyDeps = super.compileIvyDeps() ++ Agg(
-    ivy"com.lihaoyi::mill-scalalib:$millVersion",
+    ivy"com.lihaoyi::mill-scalalib:$millVersion"
+  )
+
+  override def ivyDeps = super.ivyDeps() ++ Agg(
     ivy"com.lihaoyi::upickle:2.0.0",
-    ivy"com.lihaoyi::requests:0.7.1"
+    ivy"com.lihaoyi::requests:0.7.1",
+    ivy"com.github.package-url:packageurl-java:1.4.1"
   )
 
   override def buildInfoMembers = Map(
@@ -99,6 +103,9 @@ object itest extends MillIntegrationTestModule {
           TestInvocation.Targets(Seq("verify"), noServer = true)
         ),
         PathRef(testBase / "range") -> Seq(
+          TestInvocation.Targets(Seq("verify"), noServer = true)
+        ),
+        PathRef(testBase / "reconciledRange") -> Seq(
           TestInvocation.Targets(Seq("verify"), noServer = true)
         )
       )
