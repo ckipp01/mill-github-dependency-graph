@@ -4,12 +4,12 @@ import scalafmt._
 import publish._
 import mill.scalalib.publish._
 import mill.scalalib.api.ZincWorkerUtil
-import $ivy.`com.goyeau::mill-scalafix::0.2.8`
+import $ivy.`com.goyeau::mill-scalafix::0.2.10`
 import com.goyeau.mill.scalafix.ScalafixModule
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
 import mill.contrib.buildinfo.BuildInfo
 import mill.scalalib.api.Util.scalaNativeBinaryVersion
-import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.1`
 import de.tobiasroeser.mill.integrationtest._
 import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.1.4`
 import de.tobiasroeser.mill.vcs.version.VcsVersion
