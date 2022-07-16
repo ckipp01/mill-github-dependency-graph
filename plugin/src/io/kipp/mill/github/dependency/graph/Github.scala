@@ -26,6 +26,7 @@ object Github {
     * @param ctx
     */
   def submit(snapshot: DependencySnapshot)(implicit ctx: mill.api.Ctx): Unit = {
+    ctx.log.info("Submitting your snapshot to GitHub...")
     val payload = upickle.default.write(snapshot)
     val result = requests.post(
       url.toString(),
@@ -40,16 +41,20 @@ object Github {
     if (result.is2xx) {
       val manifestModules = snapshot.manifests.size
       val totalDependencies =
-        snapshot.manifests.values.foldLeft(0) { (total, manifest) =>
-          total + manifest.resolved.size
+        snapshot.manifests.values.foldLeft[Seq[String]](Seq.empty) {
+          (total, manifest) =>
+            total ++ manifest.resolved.map(_._1)
         }
+      val totalSize = totalDependencies.size
+      val uniqueSize = totalDependencies.toSet.size
 
       ctx.log.info(s"""Correctly submitted your snapshot to GitHub!
                       |
                       |Here are some fun stats!
                       |
                       |We submitted dependencies for ${manifestModules} modules.
-                      |This was a total of ${totalDependencies} dependencies.
+                      |This was a total of ${totalSize} dependencies.
+                      |${uniqueSize} were unique.
                       |""".stripMargin)
     } else if (result.statusCode == 404) {
       val msg =
