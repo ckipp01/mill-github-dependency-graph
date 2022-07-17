@@ -8,7 +8,7 @@ import mill.define.ExternalModule
 import mill.eval.Evaluator
 import mill.main.EvaluatorScopt
 
-object Graph extends ExternalModule { outer =>
+object Graph extends ExternalModule {
 
   import Writers._
 
