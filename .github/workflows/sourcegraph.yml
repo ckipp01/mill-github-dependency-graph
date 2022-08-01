@@ -32,6 +32,6 @@ jobs:
           mkdir -p bin
           curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 -o bin/src
           chmod +x bin/src
-          ./bin/src code-intel upload -trace=3 -file out/io/kipp/mill/scip/Scip/generate.dest/index.scip -github-token $GITHUB_TOKEN
+          ./bin/src code-intel upload -trace=3 -root . -file out/io/kipp/mill/scip/Scip/generate.dest/index.scip -github-token $GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
