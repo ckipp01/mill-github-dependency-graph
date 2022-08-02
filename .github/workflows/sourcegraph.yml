@@ -25,7 +25,7 @@ jobs:
           java-version: '17'
 
       - name: Generate SCIP File
-        run: ./mill --import ivy:io.chris-kipp::mill-scip::0.1.1 io.kipp.mill.scip.Scip/generate
+        run: ./mill --import ivy:io.chris-kipp::mill-scip::0.2.0 io.kipp.mill.scip.Scip/generate
 
       - name: Upload SCIP file
         run: |
