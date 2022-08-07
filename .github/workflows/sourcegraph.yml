@@ -27,11 +27,11 @@ jobs:
       - name: Generate SCIP File
         run: ./mill --import ivy:io.chris-kipp::mill-scip::0.2.1 io.kipp.mill.scip.Scip/generate
 
+      - name: Install src
+        run: yarn global add @sourcegraph/src
+
       - name: Upload SCIP file
         run: |
-          mkdir -p bin
-          curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 -o bin/src
-          chmod +x bin/src
-          ./bin/src code-intel upload -trace=3 -root . -file out/io/kipp/mill/scip/Scip/generate.dest/index.scip -github-token $GITHUB_TOKEN
+          src code-intel upload -trace=3 -root . -file out/io/kipp/mill/scip/Scip/generate.dest/index.scip -github-token $GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
