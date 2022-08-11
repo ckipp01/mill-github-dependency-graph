@@ -15,8 +15,7 @@ import mill.scalalib.api.Util.scalaNativeBinaryVersion
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version.VcsVersion
 
-// TODO Should probably drop this to 0.10.0, but when I did a bunch of stuff breaks
-val millVersion = "0.10.3"
+val millVersion = "0.10.0"
 val scala213 = "2.13.8"
 val artifactBase = "mill-github-dependency-graph"
 
