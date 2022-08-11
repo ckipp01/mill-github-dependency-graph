@@ -6,7 +6,6 @@ import mill.eval.Evaluator
 import mill.scalalib.Dep
 import mill.scalalib.JavaModule
 import mill.scalalib.Lib
-import mill.scalalib.internal.ModuleUtils
 
 /** Utils to help find all your modules and resolve their dependencies.
   */
@@ -33,7 +32,6 @@ object Resolver {
         val repos = javaModule.repositoriesTask()
         val mapDeps = javaModule.mapDependencies()
         val custom = javaModule.resolutionCustomizer()
-        val cacheCustom = javaModule.coursierCacheCustomizer()
 
         val (dependencies, resolution) =
           Lib.resolveDependenciesMetadata(
@@ -42,7 +40,6 @@ object Resolver {
             deps = deps,
             mapDependencies = Some(mapDeps),
             customizer = custom,
-            coursierCacheCustomizer = cacheCustom,
             ctx = Some(T.log)
           )
 
@@ -57,12 +54,6 @@ object Resolver {
     }
   }
 
-  /** Quick and dirty, give me all the JavaModules.
-    */
-  private[graph] def computeModules(ev: Evaluator): Seq[JavaModule] = {
-    ModuleUtils
-      .transitiveModules(ev.rootModule)
-      .collect { case jm: JavaModule => jm }
-  }
-
+  private[graph] def computeModules(ev: Evaluator) =
+    ev.rootModule.millInternal.modules.collect { case j: JavaModule => j }
 }
