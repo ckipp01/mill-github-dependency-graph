@@ -1,7 +1,7 @@
 import $ivy.`com.goyeau::mill-scalafix::0.2.10`
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.6.1`
-import $ivy.`de.tototec::de.tobiasroeser.mill.vcs.version::0.2.0`
+import $ivy.`io.chris-kipp::mill-ci-release::0.1.0`
 
 import mill._
 import scalalib._
@@ -14,6 +14,7 @@ import mill.contrib.buildinfo.BuildInfo
 import mill.scalalib.api.Util.scalaNativeBinaryVersion
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version.VcsVersion
+import io.kipp.mill.ci.release.CiReleaseModule
 
 val millVersion = "0.10.0"
 val scala213 = "2.13.8"
@@ -25,11 +26,9 @@ def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
 
 trait Common
     extends ScalaModule
-    with PublishModule
+    with CiReleaseModule
     with ScalafixModule
     with ScalafmtModule {
-
-  def publishVersion = VcsVersion.vcsState().format()
 
   def pomSettings = PomSettings(
     description = "Submit your mill project's dependency graph to GitHub",
@@ -41,6 +40,10 @@ trait Common
     developers =
       Seq(Developer("ckipp01", "Chris Kipp", "https://www.chris-kipp.io"))
   )
+
+  override def sonatypeUri = "https://s01.oss.sonatype.org/service/local"
+  override def sonatypeSnapshotUri =
+    "https://s01.oss.sonatype.org/content/repositories/snapshots"
 
   def scalaVersion = scala213
 
