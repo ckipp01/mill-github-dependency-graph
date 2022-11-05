@@ -15,6 +15,7 @@ import mill.scalalib.api.Util.scalaNativeBinaryVersion
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
+import io.kipp.mill.ci.release.SonatypeHost
 
 val millVersion = "0.10.0"
 val scala213 = "2.13.8"
@@ -41,9 +42,7 @@ trait Common
       Seq(Developer("ckipp01", "Chris Kipp", "https://www.chris-kipp.io"))
   )
 
-  override def sonatypeUri = "https://s01.oss.sonatype.org/service/local"
-  override def sonatypeSnapshotUri =
-    "https://s01.oss.sonatype.org/content/repositories/snapshots"
+  override def sonatypeHost: Option[SonatypeHost] = Some(SonatypeHost.s01)
 
   def scalaVersion = scala213
 
