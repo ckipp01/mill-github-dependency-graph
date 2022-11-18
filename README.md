@@ -76,3 +76,11 @@ look like locally for your project, which are the main part of the
 ```sh
 ./mill --import ivy:io.chris-kipp::mill-github-dependency-graph::0.1.0 show io.kipp.mill.github.dependency.graph.Graph/generate
 ```
+
+### Limitation
+
+You'll notice when using this that a lot of dependencies aren't linked back to
+the repositories where they are located, some may be wrongly linked, and much of
+the information the plugin is providing (like direct vs indirect) isn't actually
+displayed in the UI. Much of this is either bugs or limitations on the GitHub UI
+side. You can follow some conversation on this [here](https://github.com/orgs/community/discussions/19492).
