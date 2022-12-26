@@ -48,7 +48,7 @@ def verify(ev: Evaluator) = T.command {
   // Since I believe this to be a bug in coursier for now we'll just throw them
   // out to ensure we're not creating invalid PURLs.
   val expected = Set(
-    "org.scala-lang:scala-library:2.13.8",
+    "org.scala-lang:scala-library:2.13.10",
     "com.fasterxml.jackson.core:jackson-core:2.13.3",
     // NOTICE that com.fasterxml.jackson.core:jackson-core:[2.7.0,2.12.3] is not here
     "com.fasterxml.jackson.core:jackson-core:2.12.3",
