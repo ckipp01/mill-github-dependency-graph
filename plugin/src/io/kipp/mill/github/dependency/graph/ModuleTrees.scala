@@ -31,13 +31,30 @@ final case class ModuleTrees(
       ctx: mill.api.Ctx
   ): Map[String, DependencyNode] = {
 
+    // Keep track of every seen dependency and the DependencyNode for it
     val allDependencies = mutable.Map[String, DependencyNode]()
+    // NOTE: maybe note necessary, but since we do this look in various times, we cache it
+    val treeToName = mutable.Map[DependencyTree, String]()
 
     def toNode(tree: DependencyTree, root: Boolean): Unit = {
+
+      def getNameFromTree(_tree: DependencyTree): String = {
+        treeToName.getOrElseUpdate(
+          _tree, {
+            val _dep = _tree.dependency
+            val moduleOrgName = _dep.module.orgName
+            val reconciledVersion = _tree.reconciledVersion
+            s"${moduleOrgName}:${reconciledVersion}"
+
+          }
+        )
+      }
+
       val dep = tree.dependency
-      val moduleOrgName = dep.module.orgName
+      val name = getNameFromTree(tree)
       val reconciledVersion = tree.reconciledVersion
-      val name = s"${moduleOrgName}:${reconciledVersion}"
+      val children = tree.children
+      val childrenNames = children.map(getNameFromTree)
 
       def putTogether: DependencyNode = {
         // TODO consider classifiers
@@ -64,16 +81,14 @@ final case class ModuleTrees(
         val relationShip: DependencyRelationship =
           if (root) DependencyRelationship.direct
           else DependencyRelationship.indirect
-        val dependencies = tree.children.map { child =>
-          s"${child.dependency.module.orgName}:${child.reconciledVersion}"
-        }
+
         DependencyNode(
           purl,
           // TODO we can check if original == reconciled here and add metadata that it is a reconciled version
           Map.empty,
           Some(relationShip),
           None,
-          dependencies
+          childrenNames
         )
       }
 
@@ -118,7 +133,28 @@ final case class ModuleTrees(
           allDependencies += ((name, node))
       }
 
-      tree.children.foreach(toNode(_, root = false))
+      // If all the children are already contained in allDependencies we don't even need
+      // to try and process them, we just skip it and move on.
+      if (childrenNames.forall(allDependencies.contains)) {
+        ctx.log.debug(
+          s"short circuiting as all children of ${name} are already looked at."
+        )
+      } else {
+        // This is a bit odd, but needed in the context of
+        // https://github.com/ckipp01/mill-github-dependency-graph/issues/77
+        // There can be poms that _look_ like they have cyclical dependencies
+        // espeically when using classifiers. This actually seems like it might
+        // be another bug in Couriser:
+        // https://github.com/coursier/coursier/issues/2683
+        // So, for now we filter out itself if it has itself listed as a child and we
+        // also filter out any children that we've already seen.
+        tree.children
+          .filterNot(child =>
+            child == tree ||
+              allDependencies.contains(getNameFromTree(child))
+          )
+          .foreach(toNode(_, root = false))
+      }
     }
 
     dependencyTrees.foreach(toNode(_, root = true))

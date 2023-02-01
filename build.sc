@@ -109,6 +109,9 @@ object itest extends MillIntegrationTestModule {
         ),
         PathRef(testBase / "reconciledRange") -> Seq(
           TestInvocation.Targets(Seq("verify"), noServer = true)
+        ),
+        PathRef(testBase / "cyclical") -> Seq(
+          TestInvocation.Targets(Seq("checkManifest"), noServer = true)
         )
       )
     }
