@@ -1,0 +1,51 @@
+{
+  "overflow": {
+    "name": "overflow",
+    "metadata": {
+      
+    },
+    "resolved": {
+      "io.netty:netty-tcnative-classes:2.0.54.Final": {
+        "metadata": {
+          
+        },
+        "dependencies": [
+          
+        ],
+        "relationship": "indirect",
+        "package_url": "pkg:maven/io.netty/netty-tcnative-classes@2.0.54.Final"
+      },
+      "org.scala-lang:scala-library:2.13.10": {
+        "metadata": {
+          
+        },
+        "dependencies": [
+          
+        ],
+        "relationship": "direct",
+        "package_url": "pkg:maven/org.scala-lang/scala-library@2.13.10"
+      },
+      "io.netty:netty-tcnative-boringssl-static:2.0.54.Final": {
+        "metadata": {
+          
+        },
+        "dependencies": [
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-boringssl-static:2.0.54.Final",
+          "io.netty:netty-tcnative-classes:2.0.54.Final"
+        ],
+        "relationship": "direct",
+        "package_url": "pkg:maven/io.netty/netty-tcnative-boringssl-static@2.0.54.Final"
+      }
+    },
+    "file": {
+      "source_location": "build.sc"
+    }
+  }
+}
