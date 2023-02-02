@@ -6,8 +6,8 @@ import $ivy.`org.scalameta::munit:0.7.29`
 import munit.Assertions._
 
 object minimal extends ScalaModule {
+  // scala-steward:off
   def scalaVersion = "3.1.3"
-
   def ivyDeps = Agg(
     ivy"org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.12.0"
   )
@@ -26,6 +26,7 @@ def verify(ev: Evaluator) = T.command {
     "org.scala-lang:scala3-library_3:3.1.3",
     "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.12.0",
     "com.google.code.gson:gson:2.8.9"
+    // scala-steward:on
   )
 
   assertEquals(manifestMapping.head._2.resolved.keys, expected)

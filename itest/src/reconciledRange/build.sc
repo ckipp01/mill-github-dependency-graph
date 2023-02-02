@@ -6,6 +6,7 @@ import $ivy.`org.scalameta::munit:0.7.29`
 import munit.Assertions._
 
 object minimalDep extends ScalaModule {
+  // scala-steward:off
   def scalaVersion = "2.13.8"
 
   def ivyDeps = Agg(
@@ -56,6 +57,7 @@ def verify(ev: Evaluator) = T.command {
     "com.fasterxml.jackson.core:jackson-annotations:2.12.3",
     "org.jongo:jongo:1.5.0",
     "de.undercouch:bson4jackson:2.12.0"
+    // scala-steward:on
   )
 
   val results = manifestMapping.foldLeft[Set[String]](Set.empty) {
