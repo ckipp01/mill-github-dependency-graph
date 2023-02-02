@@ -22,7 +22,7 @@ def verify(ev: Evaluator) = T.command {
   // the reconciled version. So we want to ensure `2.8.9` and not
   // `[2.8.6,2.0)`.
   val expected = Set(
-    "org.scala-lang:scala-library:2.13.8",
+    "org.scala-lang:scala-library:2.13.10",
     "org.scala-lang:scala3-library_3:3.1.3",
     "org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.12.0",
     "com.google.code.gson:gson:2.8.9"
