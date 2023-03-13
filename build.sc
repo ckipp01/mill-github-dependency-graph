@@ -68,7 +68,7 @@ object plugin extends Common with BuildInfo {
   )
 
   override def ivyDeps = super.ivyDeps() ++ Agg(
-    ivy"com.lihaoyi::upickle:2.0.0",
+    ivy"com.lihaoyi::upickle:3.0.0",
     ivy"com.lihaoyi::requests:0.8.0",
     ivy"com.github.package-url:packageurl-java:1.4.1"
   )
