@@ -17,7 +17,7 @@ import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val millVersion = "0.10.11"
+val millVersion = "0.10.12"
 val scala213 = "2.13.8"
 val artifactBase = "mill-github-dependency-graph"
 
