@@ -17,13 +17,17 @@ import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val millVersion = "0.10.12"
+val millVersions = Seq("0.10.12", "0.11.0-M8")
+val millBinaryVersions = millVersions.map(scalaNativeBinaryVersion)
 val scala213 = "2.13.8"
 val artifactBase = "mill-github-dependency-graph"
 
 def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
   millVersion
 )
+
+def millVersion(binaryVersion: String) =
+  millVersions.find(v => millBinaryVersion(v) == binaryVersion).get
 
 trait Common
     extends ScalaModule
@@ -57,14 +61,23 @@ object domain extends Common {
   override def artifactName = "github-dependency-graph-domain"
 }
 
-object plugin extends Common with BuildInfo {
+object plugin extends Cross[Plugin](millBinaryVersions: _*)
+class Plugin(millBinaryVersion: String) extends Common with BuildInfo {
+
+  override def millSourcePath = super.millSourcePath / os.up
+
+  override def sources = T.sources {
+    super.sources() ++ Seq(
+      millSourcePath / s"src-mill${millVersion(millBinaryVersion).split('.').take(2).mkString(".")}"
+    ).map(PathRef(_))
+  }
 
   override def artifactName =
-    s"${artifactBase}_mill${millBinaryVersion(millVersion)}"
+    s"${artifactBase}_mill${millBinaryVersion}"
 
   override def moduleDeps = Seq(domain)
   override def compileIvyDeps = super.compileIvyDeps() ++ Agg(
-    ivy"com.lihaoyi::mill-scalalib:$millVersion"
+    ivy"com.lihaoyi::mill-scalalib:${millVersion(millBinaryVersion)}"
   )
 
   override def ivyDeps = super.ivyDeps() ++ Agg(
@@ -84,11 +97,14 @@ object plugin extends Common with BuildInfo {
   )
 }
 
-object itest extends MillIntegrationTestModule {
+object itest extends Cross[ItestCross](millVersions: _*)
+class ItestCross(millVersion: String) extends MillIntegrationTestModule {
+
+  override def millSourcePath = super.millSourcePath / os.up
 
   def millTestVersion = millVersion
 
-  def pluginsUnderTest = Seq(plugin)
+  def pluginsUnderTest = Seq(plugin(millBinaryVersion(millVersion)))
 
   def testBase = millSourcePath / "src"
 
