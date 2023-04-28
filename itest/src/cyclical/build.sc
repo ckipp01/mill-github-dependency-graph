@@ -1,5 +1,5 @@
 import mill._, scalalib._
-import $exec.plugins
+import $file.plugins
 import io.kipp.mill.github.dependency.graph.Graph
 import io.kipp.mill.github.dependency.graph.Writers._
 import mill.eval.Evaluator

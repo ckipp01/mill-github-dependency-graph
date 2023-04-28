@@ -57,4 +57,4 @@ jobs:
 
     - name: Test
       run:
-        ./mill -i --debug itest
+        ./mill -i --debug itest[_].test

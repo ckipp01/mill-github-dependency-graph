@@ -6,7 +6,6 @@ import mill.define.Command
 import mill.define.Discover
 import mill.define.ExternalModule
 import mill.eval.Evaluator
-import mill.main.EvaluatorScopt
 
 object Graph extends ExternalModule {
 
@@ -28,9 +27,6 @@ object Graph extends ExternalModule {
       manifests
     }
 
-  implicit def millScoptEvaluatorReads[T]: EvaluatorScopt[T] =
-    new mill.main.EvaluatorScopt[T]()
-
+  import Reader._
   lazy val millDiscover: Discover[this.type] = mill.define.Discover[this.type]
-
 }
