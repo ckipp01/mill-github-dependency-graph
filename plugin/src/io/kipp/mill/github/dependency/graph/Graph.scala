@@ -3,7 +3,6 @@ package io.kipp.mill.github.dependency.graph
 import io.kipp.github.dependency.graph.domain
 import mill._
 import mill.define.Command
-import mill.define.Discover
 import mill.define.ExternalModule
 import mill.eval.Evaluator
 
@@ -27,6 +26,5 @@ object Graph extends ExternalModule {
       manifests
     }
 
-  import Reader._
-  lazy val millDiscover: Discover[this.type] = mill.define.Discover[this.type]
+  lazy val millDiscover: mill.define.Discover[this.type] = Discover[this.type]
 }
