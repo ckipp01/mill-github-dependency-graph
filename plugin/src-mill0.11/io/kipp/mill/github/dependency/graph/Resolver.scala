@@ -20,7 +20,7 @@ object Resolver {
   private[graph] def resolveModuleTrees(
       evaluator: Evaluator,
       javaModules: Seq[JavaModule]
-  ): Seq[ModuleTrees] = Evaluator.evalOrThrow(evaluator) {
+  ): Seq[ModuleTrees] = evaluator.evalOrThrow() {
     javaModules.map { javaModule =>
       T.task {
 
