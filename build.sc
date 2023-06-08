@@ -1,6 +1,6 @@
 import $ivy.`com.goyeau::mill-scalafix::0.2.11`
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
-import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.0`
+import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
 import $ivy.`io.chris-kipp::mill-ci-release::0.1.8`
 
 import mill._
