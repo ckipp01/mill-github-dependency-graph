@@ -11,7 +11,7 @@ object minimal extends ScalaModule {
 
   def ivyDeps = Agg(ivy"com.lihaoyi::pprint:0.7.3")
 
-  object test extends Tests with TestModule.Munit {
+  object test extends ScalaModuleTests with TestModule.Munit {
     def ivyDeps = Agg(ivy"org.scalameta::munit:0.7.29")
   }
 }
