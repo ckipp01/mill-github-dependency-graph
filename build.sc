@@ -52,8 +52,6 @@ trait Common
 
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
 
-  def scalafixIvyDeps = Agg(ivy"com.github.liancheng::organize-imports:0.6.0")
-
   def scalafixScalaBinaryVersion = ZincWorkerUtil.scalaBinaryVersion(scala213)
 }
 
