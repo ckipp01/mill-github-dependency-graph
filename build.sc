@@ -9,9 +9,9 @@ import scalafmt._
 import publish._
 import mill.scalalib.publish._
 import mill.scalalib.api.ZincWorkerUtil
+import mill.scalalib.api.ZincWorkerUtil._
 import com.goyeau.mill.scalafix.ScalafixModule
 import mill.contrib.buildinfo.BuildInfo
-import mill.scalalib.api.Util.scalaNativeBinaryVersion
 import de.tobiasroeser.mill.integrationtest._
 import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
@@ -59,23 +59,21 @@ object domain extends Common {
   override def artifactName = "github-dependency-graph-domain"
 }
 
-object plugin extends Cross[Plugin](millBinaryVersions: _*)
-class Plugin(millBinaryVersion: String) extends Common with BuildInfo {
-
-  override def millSourcePath = super.millSourcePath / os.up
+object plugin extends Cross[Plugin](millBinaryVersions)
+trait Plugin extends Cross.Module[String] with Common with BuildInfo {
 
   override def sources = T.sources {
     super.sources() ++ Seq(
-      millSourcePath / s"src-mill${millVersion(millBinaryVersion).split('.').take(2).mkString(".")}"
+      millSourcePath / s"src-mill${millVersion(crossValue).split('.').take(2).mkString(".")}"
     ).map(PathRef(_))
   }
 
   override def artifactName =
-    s"${artifactBase}_mill${millBinaryVersion}"
+    s"${artifactBase}_mill${crossValue}"
 
   override def moduleDeps = Seq(domain)
   override def compileIvyDeps = super.compileIvyDeps() ++ Agg(
-    ivy"com.lihaoyi::mill-scalalib:${millVersion(millBinaryVersion)}"
+    ivy"com.lihaoyi::mill-scalalib:${millVersion(crossValue)}"
   )
 
   override def ivyDeps = super.ivyDeps() ++ Agg(
@@ -84,25 +82,21 @@ class Plugin(millBinaryVersion: String) extends Common with BuildInfo {
     ivy"com.github.package-url:packageurl-java:1.4.1"
   )
 
-  override def buildInfoMembers = Map(
-    "detectorName" -> artifactBase,
-    "homepage" -> pomSettings().url,
-    "version" -> publishVersion()
+  override def buildInfoMembers = Seq(
+    BuildInfo.Value("detectorName", artifactBase),
+    BuildInfo.Value("homepage", pomSettings().url),
+    BuildInfo.Value("version", publishVersion())
   )
   override def buildInfoObjectName = "BuildInfo"
-  override def buildInfoPackageName = Some(
-    "io.kipp.mill.github.dependency.graph"
-  )
+  override def buildInfoPackageName = "io.kipp.mill.github.dependency.graph"
 }
 
-object itest extends Cross[ItestCross](millVersions: _*)
-class ItestCross(millVersion: String) extends MillIntegrationTestModule {
+object itest extends Cross[ItestCross](millVersions)
+trait ItestCross extends Cross.Module[String] with MillIntegrationTestModule {
 
-  override def millSourcePath = super.millSourcePath / os.up
+  def millTestVersion = crossValue
 
-  def millTestVersion = millVersion
-
-  def pluginsUnderTest = Seq(plugin(millBinaryVersion(millVersion)))
+  def pluginsUnderTest = Seq(plugin(millBinaryVersion(crossValue)))
 
   def testBase = millSourcePath / "src"
 
