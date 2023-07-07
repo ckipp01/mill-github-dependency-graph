@@ -19,7 +19,7 @@ import io.kipp.mill.ci.release.SonatypeHost
 
 val millVersions = Seq("0.10.12", "0.11.1")
 val millBinaryVersions = millVersions.map(scalaNativeBinaryVersion)
-val scala213 = "2.13.10"
+val scala213 = "2.13.11"
 val artifactBase = "mill-github-dependency-graph"
 
 def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
@@ -53,6 +53,8 @@ trait Common
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
 
   def scalafixScalaBinaryVersion = ZincWorkerUtil.scalaBinaryVersion(scala213)
+
+  override def semanticDbVersion = "4.8.1"
 }
 
 object domain extends Common {
