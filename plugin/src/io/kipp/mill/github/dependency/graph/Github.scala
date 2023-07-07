@@ -67,7 +67,7 @@ object Github {
       throw new Exception(msg)
     } else {
       val msg =
-        s"""It looks like something went wrong when trying to submit your dependnecy graph.
+        s"""It looks like something went wrong when trying to submit your dependency graph.
             |
             |[${result.statusCode}] ${result.statusMessage}""".stripMargin
       throw new Exception(msg)
