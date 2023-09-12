@@ -8,7 +8,7 @@ import munit.Assertions._
 
 object overflow extends ScalaModule {
 
-  def scalaVersion = "2.13.11"
+  def scalaVersion = "2.13.12"
 
   // See https://github.com/ckipp01/mill-github-dependency-graph/issues/77 for the context
   // of this test. The main issue is that when you look at the children of this dep in coursier
