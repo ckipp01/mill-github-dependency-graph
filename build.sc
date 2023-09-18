@@ -53,8 +53,6 @@ trait Common
   def scalacOptions = Seq("-Ywarn-unused", "-deprecation")
 
   def scalafixScalaBinaryVersion = ZincWorkerUtil.scalaBinaryVersion(scala213)
-
-  override def semanticDbVersion = "4.8.1"
 }
 
 object domain extends Common {
