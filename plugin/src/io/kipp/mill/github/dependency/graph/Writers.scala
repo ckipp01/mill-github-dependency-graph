@@ -86,7 +86,7 @@ object Writers {
   }
 
   private implicit class MetadataJson(metadata: Map[String, String]) {
-    def toJsonValue = {
+    def toJsonValue: Obj = {
       ujson.Obj.from(
         metadata.map { case (key, value) =>
           (key, ujson.Str(value))
