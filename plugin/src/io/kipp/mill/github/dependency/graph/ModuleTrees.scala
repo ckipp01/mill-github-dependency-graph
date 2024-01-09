@@ -161,7 +161,7 @@ final case class ModuleTrees(
     allDependencies.toMap
   }
 
-  def toManifest()(implicit ctx: mill.api.Ctx) = {
+  def toManifest()(implicit ctx: mill.api.Ctx): Manifest = {
     // NOTE: That this may seem odd when reading the spec that we have a
     // manifest per module basically, but we did check with the GitHub team and
     // they verified the manifests that we showed them.

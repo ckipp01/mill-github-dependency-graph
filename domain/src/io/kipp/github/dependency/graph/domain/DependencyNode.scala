@@ -23,7 +23,7 @@ final case class DependencyNode(
 
   /** Returns true if both the relationship exists and is direct
     */
-  def isDirectDependency = relationship match {
+  def isDirectDependency: Boolean = relationship match {
     case None                                  => false
     case Some(DependencyRelationship.indirect) => false
     case Some(DependencyRelationship.direct)   => true
