@@ -77,7 +77,7 @@ trait Plugin extends Cross.Module[String] with Common with BuildInfo {
   )
 
   override def ivyDeps = super.ivyDeps() ++ Agg(
-    ivy"com.lihaoyi::upickle:3.1.3",
+    ivy"com.lihaoyi::upickle:3.1.4",
     ivy"com.lihaoyi::requests:0.8.0",
     ivy"com.github.package-url:packageurl-java:1.5.0"
   )
