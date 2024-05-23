@@ -15,7 +15,7 @@
         "relationship": "indirect",
         "package_url": "pkg:maven/io.netty/netty-tcnative-classes@2.0.54.Final"
       },
-      "org.scala-lang:scala-library:2.13.13": {
+      "org.scala-lang:scala-library:2.13.14": {
         "metadata": {
           
         },
@@ -23,7 +23,7 @@
           
         ],
         "relationship": "direct",
-        "package_url": "pkg:maven/org.scala-lang/scala-library@2.13.13"
+        "package_url": "pkg:maven/org.scala-lang/scala-library@2.13.14"
       },
       "io.netty:netty-tcnative-boringssl-static:2.0.54.Final": {
         "metadata": {
