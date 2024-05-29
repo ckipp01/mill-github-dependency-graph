@@ -17,7 +17,6 @@ The main benifits of doing this are:
 
 ## Requirements
 
-- Right now this plugin only supports the **Mill 0.10.x series**.
 - Make sure in your repo settings the Dependency Graph feature is enabled as
     well as Dependabot Alerts if you'd like them. (Settings -> Code security and
     analysis) 
