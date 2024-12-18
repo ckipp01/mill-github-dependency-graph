@@ -17,7 +17,8 @@ object minimal extends ScalaModule {
 }
 
 def checkManifest(ev: Evaluator) = T.command {
-  val expected = ujson.read(os.read(os.pwd / "manifests.json"))
+  val projectDir = Iterator.iterate(os.pwd)(_ / os.up).find(dir => os.exists(dir / "manifests.json")).get
+  val expected = ujson.read(os.read(projectDir / "manifests.json"))
 
   val manifestMapping = Graph.generate(ev)()
 

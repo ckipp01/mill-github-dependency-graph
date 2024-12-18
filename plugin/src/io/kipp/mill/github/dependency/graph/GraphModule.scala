@@ -6,11 +6,7 @@ import mill.define.Command
 import mill.define.ExternalModule
 import mill.eval.Evaluator
 
-import scala.annotation.nowarn
-
-// In here for the Discover import
-@nowarn("msg=Unused import")
-object Graph extends ExternalModule {
+trait GraphModule extends ExternalModule {
 
   import Writers._
 
@@ -30,7 +26,4 @@ object Graph extends ExternalModule {
       manifests
     }
 
-  import Discover._
-  lazy val millDiscover: mill.define.Discover[this.type] =
-    mill.define.Discover[this.type]
 }

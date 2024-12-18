@@ -3,7 +3,6 @@ package io.kipp.mill.github.dependency.graph
 import coursier.graph.DependencyTree
 import mill._
 import mill.eval.Evaluator
-import mill.scalalib.Dep
 import mill.scalalib.JavaModule
 import mill.scalalib.Lib
 
@@ -23,34 +22,37 @@ object Resolver {
       javaModules: Seq[JavaModule]
   ): Seq[ModuleTrees] = evaluator.evalOrThrow() {
     javaModules.map { javaModule =>
-      T.task {
+      Task.Anon {
 
-        val depToDependency = javaModule.resolveCoursierDependency()
-        val deps: Agg[Dep] =
+        val deps =
           javaModule.transitiveCompileIvyDeps() ++ javaModule
             .transitiveIvyDeps()
         val repos = javaModule.repositoriesTask()
         val mapDeps = javaModule.mapDependencies()
         val custom = javaModule.resolutionCustomizer()
 
-        val (dependencies, resolution) =
-          Lib.resolveDependenciesMetadata(
+        Lib
+          .resolveDependenciesMetadataSafe(
             repositories = repos,
-            depToDependency = depToDependency,
             deps = deps,
             mapDependencies = Some(mapDeps),
             customizer = custom,
-            coursierCacheCustomizer = None,
             ctx = Some(T.log)
           )
+          .map { resolution =>
+            val trees =
+              DependencyTree(
+                resolution = resolution,
+                roots = deps.map(_.dep).toSeq
+              )
 
-        val trees =
-          DependencyTree(resolution = resolution, roots = dependencies)
+            ModuleTrees(
+              javaModule,
+              trees
+            )
 
-        ModuleTrees(
-          javaModule,
-          trees
-        )
+          }
+
       }
     }
   }
