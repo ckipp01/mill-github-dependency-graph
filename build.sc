@@ -1,4 +1,4 @@
-import $ivy.`com.goyeau::mill-scalafix::0.4.0`
+import $ivy.`com.goyeau::mill-scalafix::0.4.2`
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
 import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
@@ -17,7 +17,7 @@ import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val millVersions = Seq("0.10.15", "0.11.12")
+val millVersions = Seq("0.12.4", "0.11.12", "0.10.15")
 val millBinaryVersions = millVersions.map(scalaNativeBinaryVersion)
 val scala213 = "2.13.14"
 val artifactBase = "mill-github-dependency-graph"
@@ -102,25 +102,27 @@ trait ItestCross extends Cross.Module[String] with MillIntegrationTestModule {
 
   override def testInvocations: T[Seq[(PathRef, Seq[TestInvocation.Targets])]] =
     T {
-      Seq(
-        PathRef(testBase / "minimal") -> Seq(
-          TestInvocation.Targets(Seq("checkManifest"), noServer = true)
-        ),
-        PathRef(testBase / "directRelationship") -> Seq(
-          TestInvocation.Targets(Seq("verify"), noServer = true)
-        ),
-        PathRef(testBase / "eviction") -> Seq(
-          TestInvocation.Targets(Seq("verify"), noServer = true)
-        ),
-        PathRef(testBase / "range") -> Seq(
-          TestInvocation.Targets(Seq("verify"), noServer = true)
-        ),
-        PathRef(testBase / "reconciledRange") -> Seq(
-          TestInvocation.Targets(Seq("verify"), noServer = true)
-        ),
-        PathRef(testBase / "cyclical") -> Seq(
-          TestInvocation.Targets(Seq("checkManifest"), noServer = true)
+      val env = if(millTestVersion() >= "0.12")
+        Map(
+          "COURSIER_REPOSITORIES" -> s"central sonatype:releases ivy:file://${T.dest.toString.replaceFirst("testInvocations", "test")}/ivyRepo/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]"
         )
-      )
+      else
+        Map.empty[String, String]
+      Seq(
+        "minimal" -> "checkManifest",
+        "directRelationship" -> "verify",
+        "eviction" -> "verify",
+        "range" -> "verify",
+        "reconciledRange" -> "verify",
+        "cyclical" -> "checkManifest"
+      ).map { case (testName, testMethod) =>
+        PathRef(testBase / testName) -> Seq(
+          TestInvocation.Targets(
+            Seq(testMethod),
+            noServer = true,
+            env = env
+          )
+        )
+      }
     }
 }

@@ -5,7 +5,7 @@ import io.kipp.github.dependency.graph.domain.Detector
 import io.kipp.github.dependency.graph.domain.Job
 import io.kipp.github.dependency.graph.domain.Manifest
 
-import java.net.URL
+import java.net.URI
 import java.time.Instant
 import scala.util.Properties
 
@@ -16,7 +16,7 @@ import Writers._
   */
 object Github {
 
-  private val url = new URL(
+  private val url = new URI(
     s"${Env.githubApiUrl}/repos/${Env.githubRepository}/dependency-graph/snapshots"
   )
 
@@ -29,7 +29,7 @@ object Github {
     ctx.log.info("Submitting your snapshot to GitHub...")
     val payload = upickle.default.write(snapshot)
     val result = requests.post(
-      url.toString(),
+      url.toString,
       headers = Map(
         "Content-Type" -> "application/json",
         "Authorization" -> s"token ${Env.githubToken}"
@@ -43,7 +43,7 @@ object Github {
       val totalDependencies =
         snapshot.manifests.values.foldLeft[Seq[String]](Seq.empty) {
           (total, manifest) =>
-            total ++ manifest.resolved.map(_._1)
+            total ++ manifest.resolved.keys
         }
       val totalSize = totalDependencies.size
       val uniqueSize = totalDependencies.toSet.size
@@ -69,7 +69,7 @@ object Github {
       val msg =
         s"""It looks like something went wrong when trying to submit your dependency graph.
             |
-            |[${result.statusCode}] ${result.statusMessage}""".stripMargin
+            |[${result.statusCode}] ${result.data}""".stripMargin
       throw new Exception(msg)
     }
   }

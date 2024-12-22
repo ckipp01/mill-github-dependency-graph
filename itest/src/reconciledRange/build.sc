@@ -10,7 +10,7 @@ object minimalDep extends ScalaModule {
   def scalaVersion = "2.13.8"
 
   def ivyDeps = Agg(
-    ivy"com.fasterxml.jackson.core:jackson-core:2.13.3"
+    ivy"com.fasterxml.jackson.core:jackson-core:2.12.3"
   )
 }
 
@@ -50,7 +50,7 @@ def verify(ev: Evaluator) = T.command {
   // out to ensure we're not creating invalid PURLs.
   val expected = Set(
     "org.scala-lang:scala-library:2.13.8",
-    "com.fasterxml.jackson.core:jackson-core:2.13.3",
+    "com.fasterxml.jackson.core:jackson-core:2.12.3",
     // NOTICE that com.fasterxml.jackson.core:jackson-core:[2.7.0,2.12.3] is not here
     "com.fasterxml.jackson.core:jackson-core:2.12.3",
     "com.fasterxml.jackson.core:jackson-databind:2.12.3",
