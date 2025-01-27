@@ -17,7 +17,7 @@ import de.tobiasroeser.mill.vcs.version.VcsVersion
 import io.kipp.mill.ci.release.CiReleaseModule
 import io.kipp.mill.ci.release.SonatypeHost
 
-val millVersions = Seq("0.12.4", "0.11.12", "0.10.15")
+val millVersions = Seq("0.12.4", "0.11.13", "0.10.15")
 val millBinaryVersions = millVersions.map(scalaNativeBinaryVersion)
 val scala213 = "2.13.14"
 val artifactBase = "mill-github-dependency-graph"
@@ -102,7 +102,7 @@ trait ItestCross extends Cross.Module[String] with MillIntegrationTestModule {
 
   override def testInvocations: T[Seq[(PathRef, Seq[TestInvocation.Targets])]] =
     T {
-      val env = if(millTestVersion() >= "0.12")
+      val env = if (millTestVersion() >= "0.12")
         Map(
           "COURSIER_REPOSITORIES" -> s"central sonatype:releases ivy:file://${T.dest.toString.replaceFirst("testInvocations", "test")}/ivyRepo/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]"
         )
