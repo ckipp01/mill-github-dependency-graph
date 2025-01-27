@@ -19,7 +19,7 @@ import io.kipp.mill.ci.release.SonatypeHost
 
 val millVersions = Seq("0.12.4", "0.11.12", "0.10.15")
 val millBinaryVersions = millVersions.map(scalaNativeBinaryVersion)
-val scala213 = "2.13.14"
+val scala213 = "2.13.16"
 val artifactBase = "mill-github-dependency-graph"
 
 def millBinaryVersion(millVersion: String) = scalaNativeBinaryVersion(
