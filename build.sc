@@ -102,7 +102,7 @@ trait ItestCross extends Cross.Module[String] with MillIntegrationTestModule {
 
   override def testInvocations: T[Seq[(PathRef, Seq[TestInvocation.Targets])]] =
     T {
-      val env = if(millTestVersion() >= "0.12")
+      val env = if (millTestVersion() >= "0.12")
         Map(
           "COURSIER_REPOSITORIES" -> s"central sonatype:releases ivy:file://${T.dest.toString.replaceFirst("testInvocations", "test")}/ivyRepo/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]"
         )
