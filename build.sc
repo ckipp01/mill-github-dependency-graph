@@ -1,7 +1,7 @@
 import $ivy.`com.goyeau::mill-scalafix::0.4.2`
 import $ivy.`com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION`
 import $ivy.`de.tototec::de.tobiasroeser.mill.integrationtest::0.7.1`
-import $ivy.`io.chris-kipp::mill-ci-release::0.1.10`
+import $ivy.`io.chris-kipp::mill-ci-release::0.3.0`
 
 import mill._
 import scalalib._
@@ -102,7 +102,7 @@ trait ItestCross extends Cross.Module[String] with MillIntegrationTestModule {
 
   override def testInvocations: T[Seq[(PathRef, Seq[TestInvocation.Targets])]] =
     T {
-      val env = if(millTestVersion() >= "0.12")
+      val env = if (millTestVersion() >= "0.12")
         Map(
           "COURSIER_REPOSITORIES" -> s"central sonatype:releases ivy:file://${T.dest.toString.replaceFirst("testInvocations", "test")}/ivyRepo/local/[organisation]/[module]/[revision]/[type]s/[artifact].[ext]"
         )
